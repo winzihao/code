@@ -1,0 +1,170 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#define ROW 3
+#define COL 3
+//ROW横，COL竖
+
+char g_broad[ROW][COL];
+//棋盘3*3
+
+void Init(char broad[ROW][COL]) {
+	for (int row = 0; row < ROW; ++row) {
+		for (int col = 0; col < COL; ++col){
+			broad[row][col] = ' ';
+			//赋值操作
+		}
+	}
+}
+
+//棋盘函数
+void Print(char broad[ROW][COL]) {
+	for (int row = 0; row < ROW; ++row) {
+		printf(" %c | %c | %c \n", broad[row][0], broad[row][1], broad[row][2]);
+		printf("---|---|---\n");
+	}
+}
+
+//玩家落子函数 
+void PlayerMove(char broad[ROW][COL]) {
+	printf("玩家落子!\n");
+	while (1) {
+		int row = 0;
+		int col = 0;
+		printf("请输入一组坐标（row col):");
+		scanf("%d %d", &row, &col);
+		if (row < 0 || row >= ROW || col<0 || col>COL) {
+			printf("您输入的坐标非法！请重新输入！\n");
+			continue;
+		}
+		if (broad[row][col] != ' ') {
+			printf("该位置已有子，请重新输入！\n");
+			continue;
+		}
+		broad[row][col] = 'X';
+		break;
+	}
+}
+
+//电脑落子函数
+void ComputerMove(char broad[ROW][COL]) {
+	printf("电脑落子！\n");
+	while(1) {
+		//1是真条件
+		//rand随机数 
+		int row = rand() % ROW;
+		int col = rand() % COL;
+		if (broad[row][col] != ' ') {
+			//该位置被占用，重新生成随机数
+			continue;
+		}
+		broad[row][col] = '0';
+		break;
+	}
+}
+
+int IsFull(char broad[ROW][COL]) {
+	for(int row = 0; row < ROW; ++row) {
+		for (int col = 0; col < COL; ++col){
+			if (broad[row][col] == ' ') {
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+
+char CheckWinner(char broad[ROW][COL]) {
+	//先检查所有行
+	for (int row = 0; row < ROW; ++row) {
+		if (broad[row][0] == broad[row][1]
+			&& broad[row][0] == broad[row][2]
+			&& broad[row][0] != ' ') {
+			return broad[row][0];
+		}
+	}
+	//检查所有列
+	for (int col = 0; col < COL; ++col) {
+		if (broad[0][col] == broad[1][col]
+			&& broad[0][col] == broad[2][col]
+			&& broad[0][col] != ' ') {
+			return broad[0][col];
+		}
+	}
+	//检查对角线
+	if (broad[0][0] == broad[1][1]
+		&& broad[0][0] == broad[2][2]
+		&& broad[0][0] != ' ') {
+		return broad[0][0];
+	}
+	if (broad[2][0] == broad[1][1]
+		&& broad[2][0] == broad[0][2]
+		&& broad[2][0] != ' ') {
+		return broad[2][0];
+	}
+	//判定是否和棋
+	if (IsFull(broad)) {
+		return'q';
+	}
+	return' ';
+}
+
+void Game() {
+	//1.先对棋盘进行初始化
+	Init(g_broad);
+	char Winner = ' ';
+	while (1) {
+		//2.打印棋盘(第一次打印的是空棋盘）
+		Print(g_broad);
+		//3.玩家落子，检查游戏是否结束
+		PlayerMove(g_broad);
+		//X玩家胜，O电脑胜，q和棋，‘ ’胜负未分。
+		if (Winner != ' ') {
+			break;
+		}
+		//4.电脑落子，检查游戏是否结束
+		ComputerMove(g_broad);
+		Winner = CheckWinner(g_broad);
+		if (Winner != ' ') {
+			break;
+		}
+	}
+	if (Winner == 'X') {
+		printf("玩家胜！\n");
+	}
+	else if (Winner == 'O') {
+		printf("电脑胜！\n");
+	}
+	else if (Winner == 'q') {
+		printf("和棋！\n");
+	}
+	else {
+		printf("程序出错！\n");
+	}
+}
+int Menu() {
+	printf("************************\n");
+	printf("1.开始游戏\n");
+	printf("0.退出游戏\n");
+	printf("************************\n");
+	printf("请输入您的选择：");
+		int choice;
+	scanf("%d", &choice);
+}
+int main() {
+	//随机种子的设置，只要程序启动时，设置一次就行
+	srand((unsigned int)time(0));
+	while (1) {
+		int choice = Menu();
+		if (choice == 1) {
+			Game();
+		}
+		else {
+			printf("good bye!\n");
+			break;
+		}
+	}
+	system("pause");
+	return 0;
+}
