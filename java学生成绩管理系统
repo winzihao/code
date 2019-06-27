@@ -1,0 +1,483 @@
+package class10;
+
+import java.util.Scanner;//导入java输入流
+import java.lang.*;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class Student implements Comparable<Student> {
+	private static Student s[] = new Student[1024];
+	int n = 0;
+	private String name;  // 姓名
+	private int num;  // 学号
+	private String classAge;  // 班级
+	private double math;  // 高等数学
+	private double english;  //大学英语
+	private double java;  // java
+	private double computer;  // 计算机应用基础
+	private double aver; // 平均分
+	private double Max;  // 最高分
+	private double Min;  // 最低分
+
+	
+	// 判断是否录入数据
+               // throws IOException   这个异常被抛到方法外 在这个方法外被捕获      抛出异常
+               //throws IOException表示此方法有抛出IOException异常的可能性
+	public void judge() throws IOException {       
+		int i;
+		char ch;
+		String str;
+		Scanner In = new Scanner(System.in);
+		if (n == 0) {
+			System.out.print("你还没有录入任何学生，是否录入(Y/N):");
+			str = In.next();
+			ch = str.charAt(0);  // charAt() 方法用于返回指定索引处的字符。索引范围为从 0 到 length() - 1。
+			while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n') {
+				System.out.print("输入有误，请重新输入:");
+				str = In.next();
+				ch = str.charAt(0);
+			}
+			if (ch == 'Y' || ch == 'y') {
+				this.add();    // 增加数据
+			}
+			if (ch == 'N' || ch == 'n') {
+				this.menu();
+			}
+		}
+	}
+
+	
+	
+	// 定义菜单函数
+	public void menu() throws IOException
+	{
+		int a;// 定义switch语句变量
+		Scanner in = new Scanner(System.in);  // 实例化输入流对象
+		System.out.println("*********学生信息管理系统功能表*********");
+		System.out.println("*****           1.增加             *****");
+		System.out.println("*****           2.查看             *****");
+		System.out.println("*****           3.修改             *****");
+		System.out.println("*****           4.删除             *****");
+		System.out.println("*****           5.显示             *****");
+		System.out.println("*****           6.排序             *****");
+		System.out.println("*****           7.作者             *****");
+		System.out.println("*****           0.退出             *****");
+		System.out.println("****************************************");
+		System.out.print("请选择(0~7):");
+		a = in.nextInt();
+		while (a < 0 || a > 7) {
+			System.out.print("输入超出范围，请重新输入:");
+			a = in.nextInt();
+		}
+		switch (a) {
+		case 1:
+			this.add();  // 增加
+			break;
+		case 5:
+			this.show(); // 显示即打印
+			break;
+		case 3:
+			this.modif();  // 修改信息
+			break;
+		case 4:
+			this.delete();  // 删除
+			break;
+		case 2:
+			this.look();  // 查看
+			break;
+		case 6:
+			this.SortANDprint();  // 排序
+			break;
+		case 7:
+			this.writer();   //作者
+			break;
+		case 0:
+			System.exit(0);  // 退出
+			break;
+		}
+	}
+	
+	
+
+	// 定义增加函数
+	public void add() throws IOException
+	{
+		String str, str1, str2;
+		int i, num1, t = 1;
+		char ch, ch1; 
+		FileWriter fw = new FileWriter("C:\\Users\\Lenovo\\Desktop\\C++大法.txt", true);
+		fw.write("             录入的学生信息列表\r\n\r\n学号     姓名     班级     高等数学     大学英语     java课程设计     计算机应用基础\r\n");
+		Scanner In = new Scanner(System.in);
+		while (t == 1) {
+			System.out.print("请输入学生学号:");
+			num1 = In.nextInt();
+			for (i = 0; i < n; i++) {
+				while (s[i].num == num1) {
+					System.out.println("已存在此学号，请重新输入");
+					System.out.print("请输入学号:");
+					num1 = In.nextInt();
+				}
+			}
+			
+			s[n].num = num1;
+			str2 = String.valueOf(num1);  // 返回参数的字符串表示形式
+			fw.write(str2 + "    ");  // 写入学号
+			System.out.println();
+			
+			System.out.print("请输入学生姓名:");
+			s[n].name = In.next();
+			fw.write(s[n].name + "      ");
+			System.out.println();
+			
+			System.out.print("请输入学生班级:");
+			s[n].classAge = In.next();
+			fw.write(s[n].classAge + "      ");
+			System.out.println();
+			
+			System.out.print("请输入学生高等数学成绩:");
+			s[n].math = In.nextDouble();
+			fw.write(s[n].math + "      ");
+			System.out.println();
+			
+			System.out.print("请输入学生大学英语成绩:");
+			s[n].english = In.nextDouble();
+			fw.write(s[n].english + "      ");
+			System.out.println();
+			
+			System.out.print("请输入学生java成绩:");
+			s[n].java = In.nextDouble();
+			fw.write(s[n].java + "      ");
+			System.out.println();
+			
+			System.out.print("请输入学生计算机应用基础成绩:");
+			s[n].computer = In.nextDouble();
+			fw.write(s[n].computer + "      ");
+			
+			s[n].aver = (s[n].math + s[n].english + s[n].java + s[n].computer) / 4;  // 平均分
+			fw.write(s[n].aver + "      ");
+			
+			MaxMin(n);
+			fw.write(s[n].Max + "      ");
+			fw.write(s[n].Min + "\r\n");	
+			++n;
+			
+			System.out.println();
+			System.out.print("是否继续添加(Y/N)");
+			str = In.next();
+			ch = str.charAt(0);
+			while (ch != 'N' && ch != 'n' && ch != 'Y' && ch != 'y') {
+				System.out.print("输入有误，请重新输入:");
+				str = In.next();
+				ch = str.charAt(0);
+			}
+			if (ch == 'N' || ch == 'n') {
+				fw.close();
+				break;
+			}
+		}
+		
+		System.out.println();
+		System.out.print("是否返回主菜单(Y/N)");
+		str1 = In.next();
+		ch1 = str1.charAt(0);
+		while (ch1 != 'Y' && ch1 != 'y' && ch1 != 'N' && ch1 != 'n') {
+			System.out.print("输入有误，请重新输入:");
+			str1 = In.next();
+			ch1 = str1.charAt(0);
+		}
+		if (ch1 == 'Y' || ch1 == 'y') {
+			this.menu();
+		}
+		if (ch1 == 'N' || ch1 == 'n') {
+			System.out.println("正在退出...谢谢使用!");
+			System.exit(0);
+		}
+	}
+
+	
+	
+	// 查看即打印功能实现
+	public void look() throws IOException {
+		int i; 
+		this.judge();
+		Scanner input = new Scanner(System.in);
+		System.out.print("请输入要查看的学号:");
+		i = input.nextInt();
+		System.out.println(s[i].toString());
+
+		System.out.println("系统返回主菜单!");
+		this.menu();
+	}
+
+	
+	// 删除信息功能实现
+	public void delete() throws IOException
+	{
+		this.judge();
+		int j = 0, t = 0, k = 0, num1;
+		char ch;
+		String str;
+		Scanner pin = new Scanner(System.in);
+		System.out.print("请输入要删除的学号:");
+		num1 = pin.nextInt();
+		for (j = 0; j < n; j++) {
+			if (s[j].num == num1) {
+				k = 1;  // flag 如果找到 k = 1
+				t = j;  // 如果找到将数组下标j给t
+			}
+		}
+		if (k == 0) {
+			System.out.println("对不起！你要删除的学号不存在！");
+			System.out.println("系统将返回主菜单！");
+			this.menu();
+		}
+		if (k == 1) {
+			System.out.println("你要删除的学生信息如下:");// 打印管理员要删除的学生信息
+			System.out.println(s[t].toString());
+			System.out.println();
+			System.out.print("你确定要删除(Y/N):");
+			str = pin.next();
+			ch = str.charAt(0);
+			while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n') {
+				System.out.print("输入有误，请重新输入:");
+				str = pin.next();
+				ch = str.charAt(0);
+			}
+			if (ch == 'N' || ch == 'n') {
+				System.out.println();
+				System.out.println("系统返回主菜单！");
+				this.menu();
+			}
+			if (ch == 'Y' || ch == 'y') {
+				for (j = t; j < n - 1; j++) {
+					s[j] = s[j + 1];  // 删除的实现，将数组中后面的元素向前移
+				}
+				n--;
+				System.out.println("数据成功删除!");
+				System.out.println("系统返回主菜单!");
+				this.menu();
+			}
+		}
+	}
+	
+	
+	
+	public void writer() throws IOException {
+		System.out.println("张国琛+张澳+文子豪");
+	}
+
+	
+	
+	// 显示所有数据功能实现
+	public void show() throws IOException {  
+		FileReader fr = new FileReader("C:\\Users\\Lenovo\\Desktop\\C++大法.txt");
+		int a;
+		while ((a = fr.read()) != -1) { 
+			// read()接口 从输入流读取数据的下一个字节，返回的字节的值是一个0~255之间的整数。到达流的末尾返回-1。
+			System.out.print((char) a);
+		}
+		fr.close();
+		System.out.println("系统返回主菜单！");
+		System.out.println();
+		this.menu();
+	}
+
+	
+	
+	// 修改数据信息功能
+	public void modif() throws IOException {
+		this.judge();
+		int j = 0, t = 0, k = 0, num2, num3, moi, c = 1;
+		char ch;
+		String str, str1, str2;
+		Double str3, str4, str5, str6;
+		Scanner pin = new Scanner(System.in);
+		System.out.print("请输入要修改的学号:");
+		num2 = pin.nextInt();
+		for (j = 0; j < n; j++) {
+			if (s[j].num == num2) {
+				k = 1;
+				t = j;
+			}
+		}
+		if (k == 0) {
+			System.out.println("对不起！你要修改的学号不存在！");
+			System.out.println("系统将返回主菜单！");
+			this.menu();
+		}
+		if (k == 1) {
+			System.out.println("你要修改的学生信息如下:");// 打印管理员要删除的学生信息
+			System.out.println(s[t].toString());
+			System.out.println();
+			System.out.print("你确定要修改(Y/N):");
+			str = pin.next();
+			ch = str.charAt(0);
+			while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n') {
+				System.out.print("输入有误，请重新输入:");
+				str = pin.next();
+				ch = str.charAt(0);
+			}
+			if (ch == 'N' || ch == 'n') {
+				System.out.println();
+				System.out.println("系统返回主菜单！");
+				this.menu();
+			}
+			while (c == 1) {
+				if (ch == 'Y' || ch == 'y') {
+					System.out.println("****************************************");
+					System.out.println("*****         1.修改学号                     *****");
+					System.out.println("*****         2.修改班级                     *****");
+					System.out.println("*****         3.修改姓名                     *****");
+					System.out.println("*****         4.修改高等数学              *****");
+					System.out.println("*****         5.修改大学英语              *****");
+					System.out.println("*****         6.修改java          *****");
+					System.out.println("*****         7.修改计算机应用基础   *****");
+					System.out.println("****************************************");
+					System.out.print("请选择:");
+					moi = pin.nextInt();
+					switch (moi) {
+					case 1:
+						System.out.print("请输入新的学号:");
+						num3 = pin.nextInt();
+						s[t].num = num3;
+						System.out.println();
+						break;
+					case 2:
+						System.out.print("请输入新的班级:");
+						str1 = pin.next();
+						s[t].classAge = str1;
+						break;
+					case 3:
+						System.out.print("请输入新的姓名:");
+						str2 = pin.next();
+						s[t].name = str2;
+						break;
+					case 4:
+						System.out.print("请输入新的高等数学成绩:");
+						str3 = pin.nextDouble();
+						s[t].math = str3;
+						s[t].aver = (s[t].math + s[t].english + s[t].java + s[t].computer) / 4;
+						MaxMin(t);
+						break;
+					case 5:
+						System.out.print("请输入新的大学英语成绩:");
+						str4 = pin.nextDouble();
+						s[t].english = str4;
+						s[t].aver = (s[t].math + s[t].english + s[t].java + s[t].computer) / 4;
+						MaxMin(t);
+						break;
+					case 6:
+						System.out.print("请输入新的java成绩:");
+						str5 = pin.nextDouble();
+						s[t].java = str5;
+						s[t].aver = (s[t].math + s[t].english + s[t].java + s[t].computer) / 4;
+						MaxMin(t);
+						break;
+					case 7:
+						System.out.print("请输入新的计算机应用基础成绩:");
+						str6 = pin.nextDouble();
+						s[t].computer = str6;
+						s[t].aver = (s[t].math + s[t].english + s[t].java + s[t].computer) / 4;
+						MaxMin(t);
+						break;
+					}
+					System.out.println("数据已成功修改！");
+				}
+				System.out.print("是否继续修改(Y/N)");
+				str = pin.next();
+				ch = str.charAt(0);
+				System.out.println();
+				while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n') {
+					System.out.print("输入有误，请重新输入:");
+					str = pin.next();
+					ch = str.charAt(0);
+				}
+				if (ch == 'N' || ch == 'n') {
+					break;
+				}
+			}
+		}
+		System.out.println();
+		System.out.println("系统返回主菜单！");
+		this.menu();
+	}
+	
+	
+	// 最高分最低分实现
+	public void MaxMin(int i) {
+		
+			s[i].Max = s[i].math;
+			if(s[i].english > s[i].math) {
+				s[i].Max = s[i].english;
+			}
+			else if(s[i].java > s[i].math || s[i].java > s[i].english) {
+				s[i].Max = s[i].java;
+			}
+			else if(s[i].computer > s[i].math || s[i].computer > s[i].english || s[i].computer > s[i].java) {
+				s[i].Max = s[i].computer;
+			}
+		
+			s[i].Min = s[i].math;
+			if(s[i].english < s[i].math) {
+				s[i].Min = s[i].english;
+			}
+			else if(s[i].java < s[i].math || s[i].java < s[i].english) {
+				s[i].Min = s[i].java;
+			}
+			else if(s[i].computer < s[i].math || s[i].computer < s[i].english || s[i].computer < s[i].java) {
+				s[i].Min = s[i].computer;
+			}					
+	}
+	
+	
+	//求平均值
+	public String toString() {
+		return "Student [num =" + num + ", name =" + name + ", classAge = " 
+	+ classAge + ", math = " + math + ", english = " 
+	+ english + ", computer = " + computer + ", Java = " 
+	+ java + ", aver = " + aver+ '\n' + "]"; 
+				
+	}
+
+
+	// 排序方法
+	public void SortANDprint() throws IOException {
+		
+		ArrayList<Student> Students = new ArrayList<>();
+
+		int i = 0;
+		for(i = 0; i < n; i++)
+		{
+			Students.add(s[i]);
+		}
+		
+		Collections.sort(Students);
+		FileWriter fw = new FileWriter("C:\\Users\\Lenovo\\Desktop\\C++大法.txt", false);
+		for (Student s : Students) {	
+			fw.write(s.toString());
+			System.out.println(s.toString());
+		}
+		
+		fw.close();
+		menu();
+	}
+
+	// 重写
+	public int compareTo(Student o) {
+		
+		return (int)(o.aver - this.aver);
+	}
+	
+
+	// main 函数
+	public static void main(String[] args) throws IOException {
+		Student stu = new Student();
+		
+		for (int i = 0; i < 1024; i++) {
+			s[i] = new Student();
+		}
+		
+		stu.menu();
+	}
+}
