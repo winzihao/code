@@ -1,0 +1,37 @@
+#pragma once
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+typedef struct Node {
+	struct Node *left;
+	struct Node *right;
+	char val;
+} Node;
+
+Node * Find(Node *root, char v) {
+	//1.空树里返回NULL
+	if (root == NULL) {
+		return NULL;
+	}
+	//2.如果根的值就是，返回根的地址
+	if (root->val == v) {
+		return root;
+	}
+	//3.如果根里不是，去左子树查找
+	Node *result = Find(root->left, v);
+	//4.如果左子树里找到，直接返回
+	if (result != NULL) {
+		return result;
+	}
+	//5.如果你左子树里没找到，去右子树查找
+	result = Find(root->right, v);
+    //6.如果在右子树里找到，返回
+    if (result != NULL) {
+	 return result;
+    }
+    //7.否则返回NULL
+	else {
+		renturn NULL;
+	}
+}
