@@ -1,0 +1,41 @@
+//this指针是成员函数第一个隐含的指针形参
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+using namespace std;
+
+
+class Student {
+public:
+	void Student::InitStudent(char* name, char* gender, int age) {
+		cout << this << endl;
+		//通过this指针访问
+		strcpy(this->_name, name);
+		strcpy(this->_gender, gender);
+		this->_age = age;
+	}
+
+	void Student::PrintStudent() {
+		cout << _name << ":" << _gender << "," << _age << endl;
+	}
+	//protected:
+	char _name[20];
+	char _gender[3];
+	int _age;
+};
+
+int main() {
+	Student s1;
+	Student s2;
+	Student s3;
+	cout << &s1 << endl;
+
+	s1.InitStudent("Peter", "男", 40);
+	s2.InitStudent("静静", "女", 41);
+	s3.InitStudent("Summer", "公", 2);
+	s1.PrintStudent();
+	s2.PrintStudent();
+	s3.PrintStudent();
+	system("pause");
+	return 0;
+}
+
