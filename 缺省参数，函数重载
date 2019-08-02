@@ -1,0 +1,105 @@
+#include<iostream>
+using namespace std;   //命名空间的包含
+
+
+//输入输出
+//数字不带‘，字符带单’，字符串带“
+int main() {
+	int a;
+	cin >> a;  //>>输入运算符
+	double b;
+	cin >> a >> b;
+	cout << "change world" << endl;    //  <<流，输出运算符  cout输出   endl 换行
+	cout << 100 << "   " << "hello" <<" "<< 12.34 << 'a' << endl;
+	system("pause");
+		return 0;
+}
+
+
+
+#if 0
+//全缺省参数：每个参数都带默认值
+void Test(int a = 1, int b = 2, int c = 3) {
+	cout << a << "  " << b << "  " << c << endl;
+}
+int main() {
+	Test(100, 200, 300);
+	Test(100, 200);
+	Test(100);
+	Test();
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+#endif
+#if 0
+//函数重载：必须在相同的作用域，函数名字必须相同，参数列表必须不同
+
+int Add(int left, int right)
+{
+	return left + right; 
+}
+double Add(double left, double right)
+{
+	return left + right;
+}
+
+int main() {
+	Add(1, 2);
+	Add(1.0, 2.0);
+	Add('1', '2');
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//重载条件
+//参数列表必须不同：参数个数、参数类型
+void Test(int a) 
+{}
+void Test(char a)
+{}
+void Test(int a, char b)
+{}
+void Test(char a, int b)
+{}
+//跟括号中有无返回值没有关系
+int main() {
+	Test(10);
+	system("pause");
+	return 0;
+}
+#endif
+#if 0
+//无参函数与但参函数同时存在，但单参函数不能带有缺省值
+//无参函数与同名的全缺省函数不能同时存在
+void Test()
+{}
+void Test(int a = 10,int b = 20)
+{}
+
+int main() {
+	Test(100);
+	Test(); 
+	system("pause");
+	return 0;
+}
+#endif
+#if 0
+//C++编译器对函数名字修饰规则，将参数类型编译到函数名字中
+//编译结果?Add@@YANNN@Z    Add@函数结束 @YA参数列表开始   int-H  double-N  @Z参数列表结束
+int Add(int left, int right);
+
+double Add(double left, double right);
+
+int main() {
+	Add(1, 2);
+	Add(1.0, 2.0);
+	Add('1', '2');
+	system("pause");
+	return 0;
+}
+#endif
