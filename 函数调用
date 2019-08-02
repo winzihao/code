@@ -1,0 +1,48 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+//类和对象   类：结构体--->描述事物的数据（属性），功能
+//			对象：类定义的一个变量--->实体
+//结构体 class {  };    类就是结构体
+
+
+//C语言中结构体和函数分离，C++结构体中可以有函数
+//struct Student {
+class Student {
+	void InitStudent(char* name, char* gender, int age) {
+		strcpy(_name, name);
+		strcpy(_gender, gender);
+		_age = age;
+	}
+	
+	void PrintStudent() {
+		cout << _name << ":" << _gender << "," << _age << endl;
+	}
+	
+	char _name[20];
+	char _gender[3];
+	int _age;
+};
+
+//结构体的内存对齐
+#pragma pack(2)
+//结构体的内存对齐规则：
+//1.按照括号中指定字节数进行对齐
+//2.括号中数字只能是2的幂次方
+
+int main() {
+	Student s1;
+	Student s2;
+	Student s3;
+
+	s1.InitStudent("Peter", "男", 40);
+	s2.InitStudent("静静", "女", 41);
+	s3.InitStudent("Summer", "公", 2);
+	s1.PrintStudent();
+	s2.PrintStudent();
+	s3.PrintStudent();
+	system("pause");
+	return 0;
+}
