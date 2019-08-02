@@ -1,0 +1,12 @@
+//new,delete关键字
+//完成对对象取地址工作
+malloc/free---内置类型空间      在C++中一般不用
+new/delete:申请单个对象的空间
+new[] / delete[]:申请连续空间
+
+	Date* p1 = new Date;   //调用一个构造函数
+	delete p1;     //调用析构函数,释放
+	
+	int a[10];
+	Date* p2 = new Date[10];
+	delete p2[] p2;
