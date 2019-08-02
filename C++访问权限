@@ -1,0 +1,29 @@
+//类和对象   类：结构体--->描述事物的数据（属性），功能
+//			对象：类定义的一个变量--->实体
+#include<iostream>
+using namespace std;
+
+int g_a = 10;
+//成员变量相当于是类成员函数的全局变量
+void TestFunc(int) {
+	g_a = 10;
+}
+
+class Test {
+public:
+	void TestFunc() {
+		cout << _t << endl;
+	}
+protected:
+		int _t;   //成员变量相当于是类成员函数的全局变量   
+};
+
+class A {};   //空类占一个字节
+
+int main() { 
+	Test t;
+	g_a = 20;
+	system("pause");
+	return 0;
+}
+
