@@ -1,0 +1,179 @@
+#pragma once
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+
+//链表
+typedef struct Node {
+	int val;
+	struct Node *next;
+} Node;
+//head就是链表第一个结点的地址,同时，他也代表整个链表
+
+//头插
+void PushFront(Node *head, Node *node) {
+	node->next = head;
+	head = node;
+}
+
+//头删
+void PopFront(Node *head) {
+	//链表中一定要有结点
+	Node *second = head->next;
+	free(head);
+	head = second;
+}
+
+//尾插
+void PushBack(Node *head, Node *node) {
+	node->next = NULL;
+	if (head == NULL) {
+		//链表中一个结点都没
+		head = node;
+	}
+	else {
+		//找最后一个结点
+		Node *last = GetLast(head);
+		last->next = node;
+	}
+}
+
+//尾删
+void PopBack(Node *head) {
+	//第一种情况，链表没有结点，先不考虑
+	if (head->next == NULL) {
+		//链表只有一个结点
+		free(head);
+		head = NULL;
+	}
+	else {
+		Node *倒数第二个结点 = Get倒数第二个结点（head）;
+		free(倒数第二个结点->next);
+		倒数第二个结点->next = NULL;
+	}
+}
+
+
+
+//如何遍历链表中的所有结点
+void ForEach(Node *head) {
+	Node *cur = head;
+	while (cur != NULL) {
+		cur = cur->next;
+	}
+}
+
+
+
+//删除链表中第一个遇到的v所在的结点
+void Remove(Node **ppHead, int v) {
+	if (*ppHead == NULL) {
+		return;
+	}
+	Node *cur = *ppHead;
+	if (cur->val == v){
+		*ppHead = cur->next;
+		free(cur);
+		return;
+	}
+	while (cur->next != NULL) {
+		if (cur->next->val == v) {
+			Node *nezt = cur->next;
+			cur->next = next->next;
+			free(next);
+			return;
+		}
+	}
+}
+
+
+//反转一个单链表  空间复杂度O(1)    方法：遍历所有节点，把它头插到结果连表上去
+struct ListNode* reverseList(struct ListNode* head) {
+	struct ListNode *result = NULL;   //定义结果链表
+	struct ListNode *node = head;    //遍历整个链表
+
+	while (node != NULL) {
+		struct ListNode *next = node->next;
+
+		node->next = result;
+		result = node;
+
+		node = next;
+	}
+	return result;
+}
+
+
+
+//将两个有序链表合并为一个新的链表并返回。新链表是通过拼接给定的两个链表的所有结点组成的。
+struct ListNode* mergeTwoLists(struct ListNode * l1, struct ListNode * l2) {
+	struct ListNode *c1 = l1;
+	struct ListNode *c2 = l2;
+	struct ListNode *result = NULL;
+	struct ListNode *last = NULL;
+	//result结果链表第一个结点
+	//last结果链表最后一个结点
+	//c1是要尾插到result所代表的链表
+	while (c1 != NULL&&c2 != NULL) {
+		if (c1->val <= c2->val) {
+
+			c1->next = NULL;
+			if (result == NULL) {
+				//链表中一个人结点都没
+				result=c1;
+				last = c1;
+			}
+			else {
+				//找最后一个结点
+				last->next = c1;
+				last = c1;
+		}
+	}
+}
+
+//链表的复制
+typedef struct Node {
+		int val;
+		struct Node *next;
+		struct Node *random;
+	} Node;
+
+Node * CopyList(Node *head) {
+		//1.遍历每个老结点，创建新节点，插入到老结点后边 
+	Node *cur = head;
+	while (cur != NULL) {
+			//1.创建新结点
+		Node *newNode = malloc(sizeof(Node));
+		newNode->val = cur->val;
+	//2.把newNode插入到cur结点后面
+		newNode->next = cur->next;
+		cur->next = newNode;
+	//让cur到下一个老结点上,使循环继续
+		cur = cur->next->next;
+		}
+	}
+	cur = head;
+	while (cur != NULL) {
+		//设置新结点的random，cur指向老结点
+		if (cur->random == NULL) {
+			cur->next->random = NULL;
+		}
+		else {
+			newNode->random = cur->random->next;
+		}
+		//让cur=下一个老结点
+		cur = cur->next->next;
+	}
+
+	//3.遍历每个老结点,将一条链表拆封两条链表
+	cur = head;
+	while (cur != NULL) {
+		//让cur->next等于下一个老结点
+		//找到newNode
+		//让newNode->next等于下一个新结点
+		//让cur=下一个老结点
+	}
+
+
+
