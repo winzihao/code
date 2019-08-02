@@ -1,0 +1,116 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+//完成对象的初始化工作：构造函数
+//完成对象中资源清理工作：析构函数
+//完成对象拷贝：
+//拷贝构造函数：也是构造函数的一种重载的形式
+//单参数（const类类型&）-->如果没有&，编译器编译失败，导致无限递归
+//默认拷贝构造函数：浅拷贝---将一个对象中内容原封不动的拷贝到另一个对象中
+//const修饰类成员函数，实际修饰该成员函数隐含的指针（修饰this指针），表明在该成员函数中不能对类的任何成员进行修改
+
+//构造函数名字与类名相同;编译器自动调用;在对象声明周期内只调用一次。
+//~析构函数中没有参数      原因：死不带去
+//带&是拷贝构造函数   Date(const Date& d)         
+#if 0
+class Date {
+public:
+	void SetDate(int year, int month, int day) {
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+	void PrintDate() {
+		cout << _year << "-" << _month << "-" << _day << endl;
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main() {
+	Date d;
+	d.SetDate(2019,7,30);
+	d.PrintDate(); 
+	system("pause");
+	return 0;
+}
+#endif
+#if 0
+//日期类
+class Date {
+public:
+	//构造函数
+	Date(int year, int month, int day) {
+		_year = year;
+		_month = month;
+		_day = day;
+
+		cout << "Date::Date():" << this << endl;
+	}
+
+	void SetDate(int year, int month, int day) {
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+
+	void PrintDate() {
+		cout << _year << "-" << _month << "-" << _day << endl;
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+void TestDate() {
+	Date d1(2019, 7, 30);
+	d1.PrintDate();
+}
+
+int main() {
+	int a;
+	int b = 10;
+	int c(20);
+
+	TestDate();
+	system("pause");
+	return 0;
+}  
+#endif
+#if 0
+class A {
+public:
+	A(int a,int b,int c) {
+	}
+	void PrintB() {}
+	~A {
+	}
+};
+
+private: 
+};
+
+void C() {}
+	A d(w,y,z);
+	d.PrintB();
+
+int main() {
+	int a;
+	int b;
+	int c;
+	C();
+	system("pause");
+	return 0;
+}
+#endif
+//  ~ 相反符号
+// Seqlist构造函数 
+// ~Seqlist析构函数
+//析构函数中没有参数      原因：死不带去
