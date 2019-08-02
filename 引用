@@ -1,0 +1,182 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+//传值；传地址；传引用。
+
+#if 0
+//按照值的方式进行传参
+//传值：优点--传参 函数的副作用  安全
+//      缺点-->传参效率低，不能通过形参改变实参
+void Swap(int left, int right) {
+	cout << &left << "  " << &right << endl;
+	int temp = left;
+	left = right;
+	right = temp;
+}
+
+//传址：优点--> 传参效率高；通过形参改变实参只能通过传地址的方式
+//		缺点--> 不安全，可定性差
+void Swap(int* left, int* right) {
+	int temp = *left;
+	*left = *right;
+	*right = temp;
+}
+
+
+int main() {
+	int a = 10;
+	int b = 20;
+	Swap(a, b);
+	Swap(&a, &b);
+	cout << &a << "  " << &b << endl;
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//传引用
+//调试  监视  
+//引用
+int main() {
+	int a = 10;
+	int& ra = a;
+	ra = 100;
+
+	int& rra = a;
+	rra = 20;
+
+	int b = 10;
+	a = b;
+	a = 20;
+
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//引用用的同一份空间  
+int main() {
+	const int a = 10;
+	const int& ra = a;
+	//ra = 100;
+
+	const int& rb = 10;
+
+	double d = 12.34;
+	const int& rd = d;
+	
+	d = 23.34;
+	return 0;
+}
+#endif
+#if 0
+struct A {
+	int a;
+	int b;
+	int c;
+};
+
+int main() {
+	int a = 10;
+	int& ra = a;
+
+	A aa;
+	int& rb = aa.b;
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//通过引用交换形参，就是在修改实参。可以代替指针。
+void Swap(int& left, int& right) {
+	cout << &left << "  " << &right << endl;
+
+	int temp = left;
+	left = right;
+	right = temp;
+}
+
+void Print(int& ra) {
+	cout << &ra << endl;
+}
+
+int main() {
+	int a = 10;
+	int b = 20;
+	Swap(a, b);
+	Print(a);
+	system("pause");
+	return 0;
+}
+#endif
+
+//作为函数的参数:  需要通过形参改变外部实参 T&
+//                不需要通过形参改变外部实参 const T&
+#if 0
+int main() {
+	int a = 10;
+	
+	int* pa = &a;
+	*pa = 20;
+	
+	int& ra = a;
+	ra = 20;
+
+	system("pause");
+	return 0;
+}
+#endif
+
+//引用在底层实际上按照指针的方式进行处理的。（引用和指针在底层上没有区别）
+//  T&<==>T* const     const T&<==>const T* const
+//概念：引用与其实体共用同一块内存
+//      引用-->实体的别名
+
+#if 0
+//引用和指针对不同点：1.引用定义时必须初始化   而指针没有要求
+//                   2.引用在初始化时引用一个实体后，就不能引用其他实体；而指针可以在任何时候指向任何实体
+//                   3.没有NULL引用，有NULL指针。
+//				     4.没有多级引用，有多级指针
+//                   5.sizeof中含义不同：引用结果为实体的大小（1），指针始终是地址空间所占大小（c,一个占4字节）
+//					 6.引用++则实体增加1，指针++即指针向后偏移一个类型的大小
+//					 7.访问实体方式不同，指针需要解引用；引用不用，编译器自己处理
+//					 8.引用比指针更安全
+
+int main() {
+	int a = 10;
+	int b = 20;
+
+	int& ra = a;
+//	int& ra = b;    //不能引用其他实体
+	ra++;
+
+
+	int* pa;
+	pa = &a;
+	*pa = 100;   //解引用
+	pa = &b;  //指针可以在任何时候指向任何实体
+//	pa++;   连续地址上++才有意义
+
+	char c = 'a';
+	char& rc = c;
+	char* pc = &c;
+	
+	cout << sizeof(rc) << "  " << sizeof(pc) << endl;
+	system("pause");
+}
+#endif
+
+int  main() {
+	const int a = 10;
+	int* pa = (int*)&a;
+	*pa = 100;
+
+	cout << a << endl;
+	cout << *pa << endl;
+	system("pause");
+	return 0;
+}
