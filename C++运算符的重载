@@ -1,0 +1,88 @@
+//运算符的重载
+	bool operator==(const Date& d）{
+		return _year == d._year &&
+		_month == d._month &&
+		_day == d._day;
+	}
+
+	bool operator!=(const Date& d）{
+		return != (*this == d);
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+int main() {
+	int a = 10;
+	int b = 10;
+
+	Date d1(2019, 6, 4);
+	Date d2(2019, 6, 4);
+
+	if (d1 == d2) {
+	//*if (d1.IsSame(d2)) {
+		cout << "同年同月同日生"<<endl;
+	}
+}
+#endif
+#if 0
+class Date {
+public:
+	//全缺省的构造函数
+	Date(int year = 1900, int month = 1, int day = 1) {
+		_year = year;
+		_month = month;
+		_day = day;
+	}
+
+	void PrintDate() {
+		cout << _year << "-" << _month << "-" << _day << endl;
+	}
+
+	Date& operator++() {
+		_day += 1;
+		return *this;
+	}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+};
+
+	int main() {
+		int a = 10;
+		a++;
+
+		Date d1(2019,8,1);
+		Date d2(2019, 8, 1);
+		d2=d1++;
+		
+		system("pause");
+		return 0;
+	}
+#endif
+#if 0
+//完善的Date类
+	//函数构造，拷贝构造，赋值运算符的重载
+	class Date {
+	public:
+		Date(int year = 1900, int month = 1, int day = 1);  //全缺省函数构造
+		Date(const Date& d);   //拷贝构造
+
+		Date& operator=(const Date& d);   //赋值运算符的重载
+		Date operator+(int days);
+
+		int operator+(const Date& d);
+
+		Date& operator++();   //前置++       运算符重载
+		Date operator++(int);   //后置++
+		Date& operator--();
+		Date operator--(int);
+
+		bool operator>(const Date& d)const;
+	}；
+#endif
