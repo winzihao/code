@@ -1,0 +1,122 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+#if 0
+//宏：优点：增强代码的复用性，提高性能
+//    缺点：1.不方便调试宏（预编译阶段进行了替换）
+//		    2.可读性差
+//			3.没有类型安全的检查
+
+
+#define MAX(left,right) ((left)>(right))?(left):(right)
+
+int main() {
+	int a = 10;
+	int b = 20;
+	int c = MAX(a, b);   //c 20
+	c = MAX(++b, a);     //c 22   在宏里面加了两次，本来应该是21（预编译阶段进行了替换）
+	cout << c << endl;
+	system("pause");
+	return 0;
+}
+#endif
+#if 0
+//内联函数inline：以空间换时间
+//如果有循环或递归，编译器优化时会忽略掉内联
+//编译前展开，用a和b替换了
+inline int Add(int left, int right) {
+	return left + right;
+}
+
+int main() {
+	int a = 10;
+	int b = 20;
+	int c;
+	c = Add(a, b);
+	system("pause");
+	return 0;
+}
+#endif
+
+//auto关键字
+//1.auto在定义变量时必须进行初始化
+//2.auto不能声明数组
+//3.auto声明多个变量时，变量类型必须相同
+//4.auto不能用作函数参数
+
+#if 0
+//typeid().name()  函数查看变量类型
+int main() {
+	int a = 10;
+	auto b = 12.34;
+	//1.auto在定义变量时必须进行初始化
+	cout << typeid(b).name() << endl;  //double
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+int main() {
+	int a = 10;
+	auto pa1 = &a;   //int*--->auto
+	auto* pa2 = &a;    //int*   int--->auto
+	//auto和auto*没有区别
+	cout << typeid(pa1).name() << endl;    //int*
+	cout << typeid(pa2).name() << endl;    //int*
+
+	auto& ra = a;
+	ra = 100;
+	auto rra = a;
+
+	cout << typeid(ra).name() << endl;   //int
+	cout << typeid(rra).name() << endl;  //int
+
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//2.auto不能声明数组
+int main() {
+	int arr1[10] = { 1, 2, 3 };
+	int arr2[] = { 1, 2, 3 };
+	//auto arr[] = { 1, 2, 3, 4 };
+}
+#endif
+
+#if 0
+void TestAuto() {
+	auto a = 10, b = 20;
+	//auto c = 10, d = 12.34;
+//3.auto声明多个变量时，变量类型必须相同
+}
+#endif
+
+//4.auto不能用作函数参数
+//void TestAuto(auto a=10) {}
+
+
+//C++中表示空指针最好用nullptr，而不是NULL
+//nullptr表示指针空值时，不需要包含头文件，因为是新关键字。
+void TestFunc(int a) {
+	cout << "TeatFunc(int)" << endl;
+}
+
+void TestFunc(int* pa) {
+	cout << "TeatFunc(int*)" << endl;
+}
+
+int main() {
+	int a = 10;
+	int* pa1 = &a;
+	int* pa2 = NULL;
+
+	TestFunc(0);
+//	TestFunc(NULL);   //C++里不用NULL，空指针用nullptr
+	TestFunc(nullptr);
+	system("pause");
+	return 0;
+}
