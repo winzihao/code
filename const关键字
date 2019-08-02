@@ -1,0 +1,38 @@
+//const修饰类成员函数，实际修饰该成员函数隐含的指针（修饰this指针），表明在该成员函数中不能对类的任何成员进行修改
+//const成员函数不能修改成员变量（修饰限制this指针）当前对象中的内容不允许修改
+//普通类型对象内部可以调用const类型成员函数，const类型成员函数内部不能调用普通类型成员函数
+#if 0
+//这两个函数形成重载（参数列表不一样）
+void PrintDate()
+void PrintDate()const {
+
+
+	void PrintDate1() {
+		PrintDate2();
+	}
+	void PrintDate2()const {    
+		cout << _day << endl;
+		//只读函数，不可修改
+		//_day=1;  错
+		//普通类型对象内部可以调用const类型成员函数，const类型成员函数内部不能调用普通类型成员函数
+		//PrintDate1();  
+	}
+#endif
+
+class Date {
+	public:
+		Date(int year = 1900, int month = 1, int day = 1);  //全缺省函数构造
+		Date(const Date& d);   //拷贝构造
+
+		Date& operator=(const Date& d);   //赋值运算符的重载
+		Date operator+(int days);
+
+		int operator+(const Date& d);
+
+		Date& operator++();   //前置++       运算符重载
+		Date operator++(int);   //后置++
+		Date& operator--();
+		Date operator--(int);
+
+		bool operator>(const Date& d)const;
+	}；
