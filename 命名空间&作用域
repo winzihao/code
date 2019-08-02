@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+//命名空间:作用域
+//命名空间可以嵌套
+namespace N1
+{
+	int a = 10;
+	int Add(int left, int right)
+	{
+		return left + right;
+	}
+
+	namespace N2
+	{
+		int a = 40;
+		int Sub(int left, int right) {
+			return left - right;
+		}
+	}
+}
+
+
+
+#if 0
+namespace N1
+{
+	int c = 10;
+	int b = 20;
+}
+#endif
+
+//using N1::a;     **全局里有a时不能用**
+//using namespace N1;
+int a = 20;
+
+int main() {
+	int a = 30;
+	printf("%d\n", a);   //局部a  离最近的a   30
+	printf("%d\n", ::a);  //全局a  20
+	printf("%d\n", N1::a);   //10
+	printf("%d\n", N1::N2::a);  //40
+	system("pause");
+	return 0;
+}
+
+
+
