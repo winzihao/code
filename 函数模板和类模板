@@ -1,0 +1,98 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+#if 0
+
+//函数模板
+//int Add(int left,int right)
+//int Add<int>(int left,int right)   在底层用这个名字
+//模板 template<typename T>
+template<typename T>  //模板参数列表
+T Add(T left, T right) {   //可以是任意类型
+	return left + right;
+}
+
+int main() {
+	//对函数模板进行实例化 
+	//显示实例化-->直接将T的类型实例化为参数类型
+	cout <<Add(1, 2) <<endl;
+	cout << Add(1.0, 2.0) << endl;
+	//隐式实例化-->在代码执行时，可能会对实参做隐式的类型转化
+	cout << Add<double>(1, 2.0) << endl;      
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//专门处理int的加法函数
+int Add(int left, int right) {
+	return left + right;
+}
+//通用加法函数
+template<typename T>
+T Add(T left, T right) {
+	return left + right;
+}
+//优先调用非模板函数
+int main() {
+	cout << Add(1, 2) << endl;
+	cout << Add<int>(1, 2) << endl;  //显示实例化
+
+	cout << Add<double>(1, 2.0) << endl;   //隐式实例化  调用模板生成的函数
+	cout << Add<>(1, 2) << endl;  //隐式实例化，优先调用模板生成的函数
+	system("pause");
+	return 0;
+}
+#endif
+#if 0 
+//类模板
+template<class T>
+class SeqList {
+public:
+	//构造函数
+	SeqList(size_t capacity = 3)
+		: _array(new T[capacity])
+		, _size(0)
+		, _capacity(capacity)
+	{}
+	//析构函数重载
+	~SeqList() {
+		if (_array)
+		{
+		delete[] _array;
+		array = nullptr;
+		_size = 0;
+		_capacity = 0;
+		}
+	}
+	//类名变成Seqlist<T>
+	void SeqList<T>::PushBack(const T& data);
+	void SeqList<T>::PopBack() {
+		if (!Empty)
+	}
+
+
+	size_t Size()const {
+		return _size;
+	}
+	size_t Capacity()const {
+		return _capacity;
+	}
+
+private:
+	T* _array;
+	size_t _size;
+	size_t _capacity;
+};
+
+
+int main() {
+	int array[] = { 1, 2, 3, 4, 5, 6 };
+	cout << array[5] << endl;
+	system("pause");
+	return 0;
+}
+#endif
+
+
