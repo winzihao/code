@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+
+#if 0 
+Date(int year, int month, int day) {
+	_year = year;
+	_month = month;
+	_day = day;
+}
+//初始化列表
+Date(int year, int month, int day)
+	: _year(year)
+	, _month(month)
+	, _day(day)
+{}
+
+	Date(const Date& d) {
+		_year = d._year;
+		_month = d._month;
+		_day = d._day;
+
+	Date(const Date& d) {
+		: _year(year)
+			, _month(month)
+			, _day(day)
+#endif
+
+#if 0 
+class Date {
+public:
+	//初始化列表进行初始化
+	Date(int year, int month, int day)
+		: _year(year)
+		, _month(month)
+		, _day(day)
+		, _a(year)
+		, _c(year)
+	{}
+
+private:
+	int _year;
+	int _month;
+	int _day;
+	int& _a;
+	const int _c;
+};
+
+int main() {
+	Date d(2019, 8，7);
+	
+	system("pause");
+	return 0;
+}
+#endif
+#if 0 
+class Date {
+public:
+	//初始化列表进行初始化
+	//_month是一个随机值
+	//成员变量在构造函数初始化规则：按照成员变量在类中声明的先后次序来进行初始化，而不是按照其在初始化列表中出现的先后次序初始化
+	//建议：初始化顺序最好声明顺序来进行初始化
+	Date(int year, int month)
+		: _year(year)
+		, _day(month)
+		, _month(_day)
+	{}
+
+private:
+	int _year;
+	int _day;
+	int _month;
+};
+
+int main() {
+	Date d(2019, 8);
+
+	system("pause");
+	return 0;
+}
+#endif
