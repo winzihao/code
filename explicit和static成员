@@ -1,0 +1,55 @@
+//单参构造：构造函数具有类型转化作用
+//构造函数不仅可以构造与初始化对象，对于单个参数的构造函数，还具有类型转换的作用。
+//用explicit修饰构造函数，将会禁止单参构造函数的隐式转换。
+#if 0
+class Date
+{
+public:
+	Date(int year)
+		:_year(year)
+	{}
+	
+		explicit Date(int year)
+		:_year(year)
+	{}
+private:
+	int _year;
+	int _month :
+	int _day;
+}；
+void TestDate()
+{
+	Date d1(2018);
+	// 用一个整形变量给日期类型对象赋值
+	// 实际编译器背后会用2019构造一个无名对象，最后用无名对象给d1对象进行赋值
+	d1 = 2019;
+}
+#endif
+
+//static成员
+//静态的成员变量:一定要在类外进行初始化
+//静态成员变量在类中声明时必须添加static，必须在类外定义，定义时不添加static关键字.
+//类静态成员即可用类名::静态成员或者对象.静态成员来访问
+//静态成员函数：只能直接访问静态成员变量，没有隐藏的this指针，不能访问任何非静态成员
+//this->_t = 10;
+//静态成员函数不能使用const修饰，因为没有this
+//static int GetACount()const  错误
+#if 0
+class A {
+public: A() { ++_count; }
+		A(const A& t) { ++_count; }
+		static int GetACount() { return _count; }
+private:
+	//静态成员变量在类中声明时必须添加static
+	static int _count;
+};
+//静态的成员变量:一定要在类外进行初始化,必须在类外定义，定义时不添加static关键字
+int A::_count = 0;
+
+void TestA()
+{
+	cout << A::GetACount() << endl; A a1, a2; A a3(a1);
+	cout << A::G，etACount() << endl;
+}
+#endif
+#if 0
