@@ -1,0 +1,199 @@
+#include<stdio.h>
+#include<iostream>
+using namespace std;
+//string类：管理字符串
+//结构：动态的顺序表（空间）   \0作为结尾   动态的增长
+//string如何解决浅拷贝
+//string常见接口的应用说明
+	//构造与销毁   clear  erase删除  iterator用于遍历集合中的元素
+	//容量操作  size  length  capacity  resize  reserve  
+	//元素的访问操作   find  push_back尾插  pos位置
+	//修改操作   swap  replace
+	//特殊操作   += 
+	//迭代器:类似一个指针
+
+//string类
+#include<string>  
+
+//cout  cin  getline
+#if 0
+int main() {
+	string s1;
+	string s2("hello world");
+	string s3(10, '$');
+	string s4(s3);  //拷贝构造
+
+	//string支持直接输出
+	cout << s2 << endl;
+	cout << s3 << endl;
+	cout << s4 << endl;
+	//string支持直接输入
+	//输入期间string类以空格作为分隔符，如果输入hello world，只输出hello
+	cin >> s1;    //只输出hello
+	getline(cin, s1);  //输出hello world
+	cout << s1 << endl;
+
+	system("pause");
+	return 0;
+}
+#endif
+
+//empty size length capacity clear
+#if 0
+int main() {
+	string s("hello world");
+	cout << s << endl;
+	cout << s.size() << endl;  //11
+	cout << s.length() << endl;  //11	
+	cout << s.capacity() << endl;  //15
+
+	if (s.empty()) {
+		cout << "empty string" << endl;
+	}
+	else {
+		cout << "not empty string" << endl;
+	}
+
+	s.clear();
+	if (s.empty()) {
+		cout << "empty string" << endl;
+	}
+	else {
+		cout << "not empty string" << endl;
+	}
+
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//void resize(size_t n,char ch); 
+//将string类有效字符改变到n个，多出的空间用ch进行填充，没有ch就用0填充
+//扩充的容量不会再变小
+
+int main() {
+	string s("hello");
+	cout << s.size() << endl;//5
+	//字符串默认容量是15
+	cout << s.capacity() << endl;  //15
+
+	s.resize(10, '$');   //hello$$$$$
+	cout << s.size() << endl;   //10
+	cout << s.capacity() << endl;  //15
+
+	//n>capacity底层容量：开辟新空间  拷贝元素  释放旧空间
+	s.resize(30, '8');
+	cout << s.size() << endl; //30
+	cout << s.capacity() << endl;  //31
+
+	s.resize(24);
+	cout << s.size() << endl;  //24
+	cout << s.capacity() << endl;  //31  容量不变
+
+	s.resize(12);  //12<15(默认容量)
+	cout << s.size() << endl;  //12
+	cout << s.capacity() << endl;  //31  容量扩充不容易，不变小
+
+	system("pause");
+	return 0;
+}
+#endif
+
+#if 0
+//resize:改变有效元素个数+有可能需要扩容（容量只扩不缩）
+//reserve:只改变空间大小（容量大小），不改变有效元素个数（只扩不缩）
+//void reserve(size_t newcapacity; 
+int main() {
+	string s("hello");
+	cout << s.size() << endl;
+	cout << s.capacity() << endl;
+
+	s.reserve(10);
+	cout << s.size() << endl;
+	cout << s.capacity() << endl;
+
+	s.reserve(20);
+	cout << s.size() << endl;
+	cout << s.capacity() << endl;
+
+	s.reserve(16);
+	cout << s.size() << endl;
+	cout << s.capacity() << endl;
+
+	s.reserve(3);
+	cout << s.size() << endl;
+	cout << s.capacity() << endl;
+
+	system("pause");
+	return 0;
+}
+#endif
+#if 0
+//reverse
+
+int main() {
+	string s("hello");
+	/*cout << s[3] << endl;
+	cout << s[10] << endl;*/   //最好用数组
+
+	cout << s.at(3) << endl;
+	//cout << s.at(10) << endl;  //不太好
+
+	//迭代器:类似一个指针
+	//[begin,end)
+	reverse(s.begin(), s.end());
+	string::iterator it = s.begin();
+	while (it != s.end()) {
+		cout<<*it << endl;
+		++it;
+	}
+
+	system("pause");
+	return 0;
+}
+#endif
+
+//  +=  连接字符、字符串
+//find 查找 rfind反向查找
+//erase=clear  删除,清空
+//replace
+int main() {
+	string s;
+	s += 'I';
+	s += " Love";
+
+	string str(" myself");
+	s += str;
+	cout << s << endl;  //输出：ILovemyself
+	
+	s.push_back('!');   //尾插
+	cout << s << endl;  //输出：ILovemyself!
+
+	//从pos位置
+	//find查找
+	size_t pos = s.find('!');
+	if (pos != string::npos) {   //  ！=说明找到了，==说明没找到
+		s.insert(pos, "^_^");  //插入 I Love myself^_^!
+	}
+	cout << s << endl;
+
+	//rfind反向查找
+	s.erase(s.rfind('f') + 1, 3);   //在f的后面开始删三个字符
+	cout << s << endl;        //I Love myself!
+
+	s.replace(s.find("myself") , 6, "you");
+	cout << s << endl;        //I Love you!
+
+	swap(s, str);
+	s.swap(str);
+	cout << s << endl;  //I Love you!
+
+	//s.erase();
+	//s.erase(s.begin(), s.end());
+	//s.clear();
+	//这三个是一样的
+	
+	system("pause");
+	return 0;
+}
