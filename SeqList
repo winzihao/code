@@ -1,0 +1,117 @@
+#include<stdio.h>  //printf
+#include<malloc.h>   //malloc
+#include<string.h>   //memset
+#include<stdlib.h>   //exit
+#include<assert.h>
+
+//顺序表
+
+#define SEQ_INIT_SIZE 10
+#define SEQ_INC_SIZE 2
+typedef int ElemType;
+typedef struct {
+	ElemType *date;
+	int maxsize;
+	int cursize;
+}SeqList;
+
+int GetSize(SeqList *p) {
+	return p->cursize;
+}
+int GetCapacity(SeqList *p) {
+	return p->maxsize;
+}
+bool Is_Empty(SeqList *p) {
+	return GetSize(p) == 0;
+}
+bool Is_Full(SeqList *p) {
+	return GetSize(p) == GetCapacity(p);
+}
+
+//初始化
+void Init_SeqList(SeqList *p) {
+	p->date = (ElemType*)malloc(sizeof(ElemType)*SEQ_INIT_SIZE);
+	if (p->date == NULL) {     //扩容失败
+		exit(1);
+	}
+	p->maxsize = SEQ_INIT_SIZE;
+	p->cursize = 0;
+}
+
+void Destroy_SeqList(SeqList *p) {
+	free(p->date);
+	p->date == NULL;
+	p->maxsize = 0;
+	p->cursize = 0;
+}
+
+//查找val结点
+int FindValue(SeqList *p, int val) {
+	int pos = -1;
+	for (int i = 1; i <= p->cursize; i++) {
+		if (p->date[i] == val) {
+			pos = i;
+			break;
+		}
+	} 
+	return pos;
+}
+
+//pos的范围
+ElemType Elem(SeqList *p, int pos) {
+	assert(pos >= 0 && pos <= p->maxsize);
+	return p->date[pos];
+}
+
+    
+//插入  增  pos就是下标，插入的位置.val是插入的元素
+bool Insert_SeqList(SeqList *p, int pos, ElemType val) {
+	if (pos < 1 || pos >= p->maxsize) {   //插入的位置不合法
+		return false;
+	}
+	if (Is_Full(p)) {     //p->cursize==p->maxsize;
+		return false;
+	}
+	for (int i = p->cursize; i>pos; i--) {   //从最后一个元素往前遍历
+		p->cursize[i] = p->cursize[i - 1];    //向后挪一个
+	}
+	p->date[pos] = val;  //找到pos位置,并插入
+	p->cursize += 1;    
+	return true;
+}  
+
+void Print_SeqList(SeqList *p) {
+	if(p!=NULL) 
+	printf("maxsize:%d\n", p->maxsize);
+	printf("cursize:%d\n", p->cursize);
+	for (int i = 0; i <= p -> cursize; i++) {
+		printf("%d\n", p->date[i]);
+	}
+}
+
+//删除结点
+bool Erase_Pos(SeqList *p, int pos) {
+	if (pos<0 || pos>p->cursize - 1) {
+		return false;  
+	}
+	p->cursize -= 1;
+	for (int i = pos; i < p->cursize; i++) {
+		p->date[i] = p->date[i + 1];
+	}
+	return true;
+}
+ 
+int main()
+{
+	int ar[6] = { 12, 23, 34, 45, 56, 67 };
+	SeqList mylist;
+	Init_SeqList(mylist);
+
+	for (int i = 0; i<6; ++i)
+	{
+		push_front(mylist, ar[i]);
+		Print_SeqList(mylist);
+	}
+	Destroy_SeqList(mylist);
+
+}
