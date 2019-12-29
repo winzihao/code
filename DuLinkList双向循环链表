@@ -1,0 +1,190 @@
+#include<stdio.h>  //printf
+#include<malloc.h>   //malloc
+#include<string.h>   //memset
+#include<stdlib.h>   //exit
+#include<assert.h>
+
+
+typedef int ElemType;
+typedef struct DuLNode {
+	DuLNode *prev;   //前驱（上一个节点）
+	DuLNode *next;   //指针域（下一个节点）
+	ElemType data;   //数据域
+}DuLNode;
+
+typedef struct {
+	DuLNode *head;
+	int cursize;
+}DuLinkList;   //双向循环链表
+ 
+int GetSize(DuLinkList &tlist) {
+	return tlist.cursize;
+}
+
+bool Is_Empty(DuLinkList &tlist) {
+	return GetSize(tlist) == 0;
+}
+
+//p为前驱，n为后继
+DuLNode * Buynode(DuLNode *parg,DuLNode *narg) {
+	DuLNode *s = (DuLNode*)malloc(sizeof(DuLNode));
+	if (NULL != s) {
+		s->prev = (parg == NULL) ? s : parg;
+		s->next = (narg == NULL) ? s : narg;
+	}
+	return s;
+}
+
+void Freenode(DuLNode *p) {
+	free(p);
+	p = NULL;
+}
+
+void * Init_List(DuLinkList &tlist) {
+	tlist.head = Buynode(NULL, NULL);
+	if (NULL == tlist.head) {
+		exit(1);
+	}
+	tlist.cursize = 0;
+	return tlist.head;
+}
+
+DuLNode *FindValue(DuLinkList &tlist, ElemType val) {
+	DuLNode *p = tlist.head->next;
+	while (p != NULL&&p->data != val) {
+		p = p->next;
+	}
+	if (p == tlist.head) { 
+		p = NULL;
+	}
+	return p;
+}
+
+//按位置查询
+DuLNode *FindPos(DuLinkList &tlist, int pos) {
+	if (pos<1 || pos>tlist.cursize) {
+		return NULL;
+	}
+	int i = 1;
+	DuLNode *p = tlist.head->next;
+	while (i < pos) {
+		p = p->next;
+		i++;
+	}
+	return p;
+}
+
+//前驱插入val节点
+bool Insert_Prev(DuLinkList &tlist, DuLNode *p, ElemType val) {
+	if (p == NULL) {
+		return false;
+	}
+	DuLNode *s = Buynode(p->prev,p);
+	if (s == NULL) {    //购买结点失败
+		return false;
+	}
+	p->prev = s;
+	s->prev->next = s;
+	s->data = val;
+	tlist.cursize += 1;
+	return true;
+}
+
+bool Erase(DuLinkList &tlist, DuLNode *p) {
+	if (p == NULL) {
+		return false;
+	}
+	p->next->prev = p->prev;
+	p->prev->next = p->next;
+	free(p);
+	tlist.cursize -= 1;
+	return true;
+}
+
+void Remove(DuLinkList &tlist, ElemType val) {
+	DuLNode *p = FindValue(tlist, val);
+	Erase(tlist, p);
+}
+
+
+void Remove_All(DuLinkList &tlist, ElemType val) {
+	DuLNode *p = tlist.head;
+	while (p->next != NULL) {
+		if (p->next->data == val) {
+			Erase(tlist, p);
+		} else {
+			p = p->next;
+		}
+	}
+}
+
+bool Insert_Pos(DuLinkList &tlist, int pos, ElemType val) {
+	DuLNode *p = FindPos(tlist, pos);
+    return Insert_Prev(tlist, p, val);
+}
+
+void Print_List(DuLinkList &tlist) {
+	DuLNode *p = tlist.head->next;
+	while (p != tlist.head) {
+		printf("%d", p->data);
+		p = p->next;
+	}
+	printf("\n");
+}
+
+
+void push_front(DuLinkList &tlist, ElemType val) {
+	Insert_Prev(tlist, tlist.head->next, val);
+}
+void push_back(DuLinkList &tlist, ElemType val) {
+	Insert_Prev(tlist, tlist.head, val);
+}
+void pop_back(DuLinkList &tlist) {
+	if (!Is_Empty(tlist)) {
+		Erase(tlist, tlist.head->prev);
+	}
+}
+void pop_front(DuLinkList &tlist) {
+	if (!Is_Empty(tlist)) {
+		Erase(tlist, tlist.head->next);
+	}
+}
+
+void SwapNode(DuLNode *p) {
+	DuLNode *temp = p->next;
+	p->next = p->prev;
+	p->prev = temp;
+}
+
+//逆置
+void Reverse(DuLinkList &tlist) {
+	DuLNode *p = tlist.head->next;
+	DuLNode *temp, *s;
+	if (tlist.cursize<2) return;
+	while (p != tlist.head) {
+		s = p;
+		p = p->next;
+		SwapNode(s);
+	}
+	SwapNode(p);
+}
+
+int main()
+{
+	int ar[] = { 12, 23, 34, 45, 56, 67, 78, 89, 90, 100 };
+	int n = sizeof(ar) / sizeof(ar[0]);
+	DuLinkList mylist;
+	Init_List(mylist);
+
+	for (int i = 0; i<n; ++i)
+	{
+		push_back(mylist, ar[i]);
+		Print_List(mylist);
+	}
+	Reverse(mylist);
+	Print_List(mylist);
+	Reverse(mylist);
+	Print_List(mylist);
+
+	return 0;
+}
