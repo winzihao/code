@@ -1,0 +1,209 @@
+#include<stdio.h>  //printf
+#include<malloc.h>   //malloc
+#include<string.h>   //memset
+#include<stdlib.h>   //exit
+#include<assert.h>
+
+
+//单链表
+typedef int ElemType;
+typedef struct ListNode  //结点类型
+{
+	ElemType data;  //数据域
+	ListNode *next;   //指针域
+}ListNode;            
+
+typedef struct
+{
+	ListNode *head;
+	int cursize;
+}LinkList;       //单链表
+
+ListNode * Buynode()
+{
+	ListNode *s = (ListNode*)malloc(sizeof(ListNode));
+	if (s != NULL)
+	{
+		memset(s, 0, sizeof(ListNode));
+	}d
+	return s;
+}
+
+void Freenode(ListNode *p)
+{
+	free(p);
+	p = NULL;
+}
+
+//初始化
+void * Init_List(LinkList &tlist)
+{
+	tlist.head = Buynode();
+	if (tlist.head == NULL) {
+		exit(1);
+	}
+	tlist.cursize = 0;
+	return tlist.head;
+}
+  
+int GetSize（LinkList &tlist) {
+	return tlist.cursize;
+}
+bool Is_Empty(LinkList &tlist) {
+	return Getsize(tlist)==0;
+}
+
+ListNode * FindValue(LinkList &tlist, ElemType val)
+{
+	ListNode *p = tlist.head->next; // 1 data node
+	while (p != NULL && p->data != val)
+		//while(p->data != val && p != NULL)  不行
+	{
+		p = p->next;
+	}
+	return p;
+}
+
+//查找val的前驱结点
+ListNode * Pre_FindValue(LinkList &tlist, ElemType val)
+{
+	ListNode *p = tlist.head;
+	while (p->next != NULL && p->next->data != val)
+	{
+		p = p->next;
+	}
+	if (p->next == NULL)
+	{
+		p = NULL;
+	}
+	return p;
+}
+
+//链表元素插入
+bool Insert_Next(LinkList &tlist, ListNode *p, ElemType val) {  
+	if (p == NULL) {
+		return false;
+	}
+	ListNode *s = Buynode();
+	if (s == NULL) {    //购买结点失败
+		return false;
+	}
+	s->data = val;
+	s->next = p->next;
+	p->next = s;
+	tlist.cursize += 1;
+	return true;
+}
+
+//删除next
+bool Erase_Next(LinkList &tlist, ListNode *p) {
+	if (NULL == p || NULL == tlist.head->next) {
+		return false;
+	}
+	ListNode *q = p->next;
+	p->next = q->next;
+	Freenode(q);
+	tlist.cursize -= 1;
+	return true;
+}
+
+ListNode * FindPos(LinkList &tlist, int pos) {
+	if (pos<1 || pos>tlist.cursize) {
+		return NULL;
+	}
+	ListNode *p = tlist.head->next;  //第一个数据节点
+	for (int i = 1; i < pos; i++) {
+		p = p->next;
+	}
+	return p;
+}
+
+//前驱
+ListNode * Pre_FindPos(LinkList &tlist, int pos) {
+	if (pos<1 || pos>tlist.cursize+1) {
+		return NULL;
+	}
+	ListNode *p = tlist.head;
+	for (int i = 1; i < pos; i++) {
+		p = p->next;
+	}
+	return p;
+}
+
+void push_front(LinkList &tlist, ElemType val) {
+	Insert_Next(tlist, tlist.head->next, val);
+}
+
+void push_back(LinkList &tlist, ElemType val) {
+	Insert_Next(tlist, Pre_FindPos(tlist, tlist.cursize+1), val);
+}
+
+void pop_back(LinkList &tlist) {
+	if(!Is_Empty) {
+		Erase_Next(tlist,Pre_FindPos(tlist,tlist.cursize+1));
+	}
+}
+void pop_front(LinkList &tlist) {
+	if(!Is_Empty) {
+		Erase_Next(tlist,tlist.head->next);
+	}
+}
+
+void Print_List(LinkList &tlist) {
+	ListNode *p = tlist.head->next;  //第一个数据结点
+	while (p != NULL) {
+		printf("%d", p->data);
+		p = p->next;
+	}
+	printf("\n");
+	system("pause");
+}
+
+//删除val
+void Remove(LinkList &tlist, ElemType val) {
+	ListNode *p = Pre_FindValue(tlist, val);
+	Erase_Next(tlist, p);
+}
+
+//删除所有val
+void Remove_All(LinkList &tlist, ElemType val) {
+	ListNode *p = tlist.head;
+	while (p->next != NULL) {
+		if (p->next->data == val) {
+			Erase_Next(tlist, p);
+		}
+		else {
+			p = p->next;
+		}
+	}
+}
+
+void ClearList(LinkList &tlist) {
+	while (!Is_Empty(tlist))
+	{
+		pop_front(tlist);
+	}
+}
+
+void DestroyList(LinkList &tlist) {
+	ClearList(tlist);
+	Freenode(tlist.head);
+	tlist.head=NULL;
+}
+
+int main()
+{
+	int ar[] = { 12, 23, 34, 45, 56, 67, 78, 89, 90, 100 };
+	int n = sizeof(ar) / sizeof(ar[0]);
+	LinkList mylist;
+	Init_List(mylist);
+
+	for (int i = 0; i<n; ++i)
+	{
+		push_back(mylist, ar[i]);
+		Print_List(mylist);
+	}
+	Print_List(mylist);
+
+	return 0;
+}
